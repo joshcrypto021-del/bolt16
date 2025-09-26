@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { 
   Users, UserCheck, Shield, BarChart3, AlertTriangle,
@@ -16,6 +17,7 @@ import {
 function AdminDashboard() {
   const { user } = useAuth();
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [pendingTherapists, setPendingTherapists] = useState<any[]>([]);
   const [pendingServices, setPendingServices] = useState<any[]>([]);
   const [selectedTab, setSelectedTab] = useState('overview');
@@ -100,6 +102,18 @@ function AdminDashboard() {
     { id: 'therapists', label: 'Therapists', icon: UserCheck },
     { id: 'analytics', label: 'Analytics', icon: TrendingUp },
   ];
+
+  const handleTabClick = (tabId: string) => {
+    if (tabId === 'users') {
+      navigate('/users');
+    } else if (tabId === 'therapists') {
+      navigate('/therapists');
+    } else if (tabId === 'analytics') {
+      navigate('/analytics');
+    } else {
+      setSelectedTab(tabId);
+    }
+  };
 
   const handleApproveTherapist = (id: string) => {
     const services = JSON.parse(localStorage.getItem('mindcare_therapist_services') || '[]');
@@ -278,7 +292,7 @@ function AdminDashboard() {
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setSelectedTab(tab.id)}
+                onClick={() => handleTabClick(tab.id)}
                 className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                   selectedTab === tab.id
                     ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white'
@@ -456,43 +470,12 @@ function AdminDashboard() {
               theme === 'dark' ? 'bg-gray-800' : 'bg-white'
             }`}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h3 className={`text-xl font-semibold ${
-                theme === 'dark' ? 'text-white' : 'text-gray-800'
-              }`}>
-                User Management
-              </h3>
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${
-                    theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`} />
-                  <input
-                    type="text"
-                    placeholder="Search users..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className={`pl-10 pr-4 py-2 rounded-lg border ${
-                      theme === 'dark'
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
-                    } focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                  />
-                </div>
-                <button className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
-                  <Download className="w-4 h-4" />
-                  <span>Export</span>
-                </button>
-              </div>
-            </div>
             <div className="text-center py-12">
-              <Users className={`w-16 h-16 mx-auto mb-4 ${
-                theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
-              }`} />
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
               <p className={`text-lg ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                User management interface will be implemented here
+                Redirecting to User Management...
               </p>
             </div>
           </motion.div>
@@ -506,271 +489,13 @@ function AdminDashboard() {
               theme === 'dark' ? 'bg-gray-800' : 'bg-white'
             }`}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h3 className={`text-xl font-semibold ${
-                theme === 'dark' ? 'text-white' : 'text-gray-800'
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+              <p className={`text-lg ${
+                theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                Therapy Content Management
-              </h3>
-              <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
-                Add Therapy Module
-              </button>
-            </div>
-            
-            {/* Therapy Module Management */}
-            <div className="space-y-4">
-              {/* Video Therapy Management */}
-              <div className={`p-4 rounded-lg border ${
-                theme === 'dark' ? 'border-gray-700 bg-gray-700/50' : 'border-gray-200 bg-gray-50'
-              }`}>
-                <h4 className={`font-semibold mb-3 ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-800'
-                }`}>
-                  Video Therapy Content
-                </h4>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Video Title
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter video title"
-                      className={`w-full px-3 py-2 rounded-lg border ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Therapist Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter therapist name"
-                      className={`w-full px-3 py-2 rounded-lg border ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Upload Video
-                    </label>
-                    <input
-                      type="file"
-                      accept="video/*"
-                      className={`w-full px-3 py-2 rounded-lg border ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Thumbnail
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className={`w-full px-3 py-2 rounded-lg border ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
-                    />
-                  </div>
-                </div>
-                <button className="mt-3 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
-                  Add Video
-                </button>
-              </div>
-
-              {/* Music Therapy Management */}
-              <div className={`p-4 rounded-lg border ${
-                theme === 'dark' ? 'border-gray-700 bg-gray-700/50' : 'border-gray-200 bg-gray-50'
-              }`}>
-                <h4 className={`font-semibold mb-3 ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-800'
-                }`}>
-                  Music Therapy Content
-                </h4>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Song Title
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter song title"
-                      className={`w-full px-3 py-2 rounded-lg border ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Artist Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter artist name"
-                      className={`w-full px-3 py-2 rounded-lg border ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Upload Audio
-                    </label>
-                    <input
-                      type="file"
-                      accept="audio/*"
-                      className={`w-full px-3 py-2 rounded-lg border ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Category
-                    </label>
-                    <select className={`w-full px-3 py-2 rounded-lg border ${
-                      theme === 'dark'
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
-                    }`}>
-                      <option>Nature</option>
-                      <option>Meditation</option>
-                      <option>Sleep</option>
-                      <option>Focus</option>
-                    </select>
-                  </div>
-                </div>
-                <button className="mt-3 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
-                  Add Music Track
-                </button>
-              </div>
-
-              {/* General Therapy Module Management */}
-              <div className={`p-4 rounded-lg border ${
-                theme === 'dark' ? 'border-gray-700 bg-gray-700/50' : 'border-gray-200 bg-gray-50'
-              }`}>
-                <h4 className={`font-semibold mb-3 ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-800'
-                }`}>
-                  Therapy Module Management
-                </h4>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Module Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter module name"
-                      className={`w-full px-3 py-2 rounded-lg border ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Category
-                    </label>
-                    <select className={`w-full px-3 py-2 rounded-lg border ${
-                      theme === 'dark'
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
-                    }`}>
-                      <option>CBT</option>
-                      <option>Mindfulness</option>
-                      <option>Sleep</option>
-                      <option>Stress</option>
-                      <option>Art</option>
-                      <option>Music</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      Difficulty
-                    </label>
-                    <select className={`w-full px-3 py-2 rounded-lg border ${
-                      theme === 'dark'
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
-                    }`}>
-                      <option>Beginner</option>
-                      <option>Intermediate</option>
-                      <option>Advanced</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="mt-3">
-                  <label className={`block text-sm font-medium mb-2 ${
-                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                  }`}>
-                    Description
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="Enter module description"
-                    className={`w-full px-3 py-2 rounded-lg border resize-none ${
-                      theme === 'dark'
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
-                    }`}
-                  />
-                </div>
-                <div className="flex space-x-2 mt-3">
-                  <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
-                    Add Module
-                  </button>
-                  <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                    Edit Existing
-                  </button>
-                  <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                    Remove Module
-                  </button>
-                </div>
-              </div>
+                Redirecting to Therapist Management...
+              </p>
             </div>
           </motion.div>
         )}
@@ -783,19 +508,12 @@ function AdminDashboard() {
               theme === 'dark' ? 'bg-gray-800' : 'bg-white'
             }`}
           >
-            <h3 className={`text-xl font-semibold mb-6 ${
-              theme === 'dark' ? 'text-white' : 'text-gray-800'
-            }`}>
-              Platform Analytics
-            </h3>
             <div className="text-center py-12">
-              <BarChart3 className={`w-16 h-16 mx-auto mb-4 ${
-                theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
-              }`} />
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
               <p className={`text-lg ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                Analytics dashboard will be implemented here
+                Redirecting to Analytics Dashboard...
               </p>
             </div>
           </motion.div>
