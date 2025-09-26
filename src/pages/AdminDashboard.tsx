@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { 
-  Users, UserCheck, Shield, BarChart3, AlertTriangle,
-  TrendingUp, DollarSign, Clock, CheckCircle, XCircle,
-  Eye, Edit, Trash2, Search, Filter, Download
-} from 'lucide-react';
+import { Users, UserCheck, Shield, BarChart3, AlertTriangle, TrendingUp, DollarSign, Clock, CheckCircle, XCircle, Eye, CreditCard as Edit, Trash2, Search, Filter, Download } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { 
